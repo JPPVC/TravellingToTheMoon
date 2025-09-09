@@ -25,9 +25,61 @@ TRANSCREVER Versão final para o documento word no modelo SNEA
 
 	Interface Fisica e Gráfica
 	A interface Fisica sera uma recriação fiel da interface do modulo do Apollo
-	Guidance Computer dentro do modulo de comando 
+	Guidance Computer dentro do modulo de comando ou seja a interface chamada de
+	DSKY ou apelidada de "diskey"
+	
+		Essa interface tem 3 elementos 
+		
+		-Teclado numerico de 18 chaves	
+			0-9 digitos	
+			"+" 
+			"-"
+			VERB comandar que os próximos dois digitos que vão ser	
+				digitados vão defenir uma ação
+			NOUN comandar que os próximos dois digitas que vão ser
+				digitados vão defenir um objeto da ação
+			ENTRY avisar o computador que a entrada de input ja foi feita
+			
+			CLEAR deletar um erro do logging
+			
+			ERR RST Resetar o alarme de OPR ERR
+			
+			KEY REL Se o computador estar solicitando controle
+				do display então a luz do KEY REL vai estar ligada			
+					Ou seja o computador quer fazer o display de uma mensagem
+					para isso ser feito o astronauta tem que apertar no 
+					botao KEY REL
+			PRO O programa sendo rodado pelo computador pode fazer uma requesição para fazer uma 
+				ação por meio de mostrar a mensagem no KEY REL e se o astronauta 
+				aprovar a ação como manusear o modulo lunar 
+					PROG = 63
+					VERB = 50
+					NOUN = 18
+				O astronauta aperta o botao PRO	
 
-	O simulador em si vai ser uma maquina virtual do Apollo Guidance Computer, feita em C++
+	
+		-Display numerico
+			Tem 3 áreas principais do display
+				-VERB
+					Ação sendo executada
+				-NOUN
+					Objeto da ação sendo executada
+				-PROG	
+					Programa sendo executado por exemplo na aterrisagem lunar
+					isso seria o programa 63
+		-Luzes de indicação
+			KEY REL (Key Release) 
+				O computador solicita o DISKY para mostrar uma informação importante
+				ao astronauta
+	
+	O DISKY era operado utilizando de "verbs" e "nouns"
+	como comandos. Onde o Verbo era a ação e o noun e o objeto
+	da ação.
+	
+	Um exemplo de um comando seria "Display Velocidade"
+	 
+
+8	O simulador em si vai ser uma maquina virtual do Apollo Guidance Computer, feita em C++
 	implementando um assembler que leia a sintaxe da linguagem assembly original 
 	do Apollo Guidance Computer. Completo com o proprio Scanner/Lexical Analyzer, Parser
 	(reportar erros de sintaxe) e por fim diretamente par schedueling de instruções e registros sem 
@@ -48,8 +100,11 @@ TRANSCREVER Versão final para o documento word no modelo SNEA
 	Palestra sobre o Apollo Guidance Computer
 	
 	https://www.youtube.com/watch?v=B1J2RMorJXM
-		
+	
+	https://airandspace.si.edu/collection-objects/keyboard-display-dsky-apollo-guidance-computer/nasm_A19760744000	
 
+	https://klabs.org/history/build_agc/build_agc_5.pdf
+	
 #COMO ESCREVER RESUMO:
 	https://stricto.unama.br/pt-br/noticias/aprenda-fazer-um-resumo-impecavel
 	
