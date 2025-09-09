@@ -21,11 +21,34 @@ TRANSCREVER Versão final para o documento word no modelo SNEA
 	do projeto.
   
 	
+#IMPLEMENTAÇÃO DO PROJETO
 
+	Interface Fisica e Gráfica
+	A interface Fisica sera uma recriação fiel da interface do modulo do Apollo
+	Guidance Computer dentro do modulo de comando 
+
+	O simulador em si vai ser uma maquina virtual do Apollo Guidance Computer, feita em C++
+	implementando um assembler que leia a sintaxe da linguagem assembly original 
+	do Apollo Guidance Computer. Completo com o proprio Scanner/Lexical Analyzer, Parser
+	(reportar erros de sintaxe) e por fim diretamente par schedueling de instruções e registros sem 
+	nenhuma otimização pois além de ser desnecessario é preciso manter fidelidade.
+	
+	Seria bom implementar um interpreter o qual vai fazer o papel de traduzir as instruções em tempo
+	real podendo fazer o display para o usuário na tela do PC a memória,registros e branches do programa
+	isso claro para um observador mais atento.
+	O clock da simulação podera ser pausado para analizar esses detalhes;
+	
+
+	https://github.com/chrislgarry/Apollo-11
+	
+	
 
 #PESQUISA:
-
-
+	
+	Palestra sobre o Apollo Guidance Computer
+	
+	https://www.youtube.com/watch?v=B1J2RMorJXM
+		
 
 #COMO ESCREVER RESUMO:
 	https://stricto.unama.br/pt-br/noticias/aprenda-fazer-um-resumo-impecavel
