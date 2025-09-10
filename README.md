@@ -1,6 +1,11 @@
 
 TRANSCREVER Versão final para o documento word no modelo SNEA
 
+
+NOTA COMO é um simulador o assembler não precisa estar de acordo com 
+a endianess do ACG original porém seria bom implementar os aspectos estranhos
+de como o ACG faz a leitura de binarios. O qual é complicado e involve um zero negativo 
+
 #RESUMO 1* versão: 167 PALAVRAS
 	Jogos são uma proposta famosa para integrar ensino e diversão no mesmo
 	ambiente, especialmente para crianças mais novas. Visando isso com 
@@ -22,8 +27,13 @@ TRANSCREVER Versão final para o documento word no modelo SNEA
   
 	
 #IMPLEMENTAÇÃO DO PROJETO
-
-	Interface Fisica e Gráfica
+	
+	Interface Grafica
+	Vai ser ter uma tela com informacao sobre os comandos a serem executados e uma renderizacao 3D da
+	janela do landing module e do exterior, graficos e shader simples
+	
+	
+	Interface Fisic	a
 	A interface Fisica sera uma recriação fiel da interface do modulo do Apollo
 	Guidance Computer dentro do modulo de comando ou seja a interface chamada de
 	DSKY ou apelidada de "diskey"
@@ -78,22 +88,62 @@ TRANSCREVER Versão final para o documento word no modelo SNEA
 	
 	Um exemplo de um comando seria "Display Velocidade"
 	 
+	Instruction Set:
+		15 bit word size(não opera utilizando bytes como word)
+		3bits para opcode
+		12 bits para address
+			
+			primeiras 8 instruções , instruções basicas
+			TC
+				Transfer Control
+				Basicament instrução jump
+			CCS
+				Count Compare and Skip
+				Instrução de branching condicional
+				O registro A foi carregado com valor especificado pela instrução
+				
+		
+			INDEX
+	
+			XCH
+		
+			CS
+	
+			TS
+	
+			AD
+			
+			MASK
+			
+			instrucoes extracode
+			SU
+			
+			MP
+			
+			DV
+			
 
-8	O simulador em si vai ser uma maquina virtual do Apollo Guidance Computer, feita em C++
+	O simulador em si vai ser uma maquina virtual do Apollo Guidance Computer, feita em C++
 	implementando um assembler que leia a sintaxe da linguagem assembly original 
 	do Apollo Guidance Computer. Completo com o proprio Scanner/Lexical Analyzer, Parser
 	(reportar erros de sintaxe) e por fim diretamente par schedueling de instruções e registros sem 
-	nenhuma otimização pois além de ser desnecessario é preciso manter fidelidade.
+	nenhuma otimização porém havera instruction schedueling e register schedueling pois o código da
+	luminary apresenta instruções virtuais.
 	
 	Seria bom implementar um interpreter o qual vai fazer o papel de traduzir as instruções em tempo
+	Nota que as instrucoes do luminary(programa que roda no AGC) é composto por instruções virtuais
+	as quais implementam uma stack(estrutura de dados em pilha), vetores com indices,
+	e operações de matrizes e vetores(vetores geometricos?) .O luminary em si é um pequeno sistema operacional
+	em real time. 
 	real podendo fazer o display para o usuário na tela do PC a memória,registros e branches do programa
 	isso claro para um observador mais atento.
 	O clock da simulação podera ser pausado para analizar esses detalhes;
 	
+	Como no computador real ele tera uma limitacao de 
 
 	https://github.com/chrislgarry/Apollo-11
 	
-	
+
 
 #PESQUISA:
 	
