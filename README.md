@@ -1,4 +1,10 @@
 
+
+LINK para o documento oficial onde o resumo e info do projeto dever ser colocados até o dia 15/09
+https://docs.google.com/document/d/1iXpttULFeAGEHqhbMUOEgKS-jvxk71JNAJrn8pi7_S0/edit?usp=sharing
+
+
+
 TRANSCREVER Versão final para o documento word no modelo SNEA
 
 
@@ -28,6 +34,15 @@ de como o ACG faz a leitura de binarios. O qual é complicado e involve um zero 
 	
 #IMPLEMENTAÇÃO DO PROJETO
 	
+	Nota que poderiamos pensar em integrar nosso projeto com o projeto yaAGC o qual 
+	é um emulador do Apollo Guidance Computer escrito em C. 
+	
+	Limite máximo do computador
+	"38,912 15-bit" word e 1 bit reservado para deteção de erros 
+	disponivel apenas para o hardware.
+
+	"36K of core rope and 2K of RAM"
+			
 	Interface Grafica
 	Vai ser ter uma tela com informacao sobre os comandos a serem executados e uma renderizacao 3D da
 	janela do landing module e do exterior, graficos e shader simples
@@ -128,7 +143,22 @@ de como o ACG faz a leitura de binarios. O qual é complicado e involve um zero 
 	do Apollo Guidance Computer. Completo com o proprio Scanner/Lexical Analyzer, Parser
 	(reportar erros de sintaxe) e por fim diretamente par schedueling de instruções e registros sem 
 	nenhuma otimização porém havera instruction schedueling e register schedueling pois o código da
-	luminary apresenta instruções virtuais.
+	luminary apresenta instruções virtuais. Essas instruções chamadas de virtuais 
+	eram aquelas instruções as quais eram chamada de interpreter language e a lingua que compõe 
+	o instruction set da maquina em si é chamada de basic language.
+ 	
+	O compilador/assembler do AGC era chamado de YUL originalmente (yuletide) e depois dado o nome
+	de General Assembler Program "GAP". Daria para implementar o YUL praticamente como ele foi implementado
+	originalmente por haver documentação dos "padrões de programação" utilizados durante o projeto.
+
+	No projeto original se utilizava de um debugger que guardava codigo em punchcards e tape rolls que era carregado 
+	na memória do AGC, nota que a capacidade do AGC 
+	de carregar binarios para memória em runtime é extremamente 
+	limitada. Nota que a storage do binario do luminary que foi para as missões era 100% ROM
+	ja que os fios literalmente foram "costurados" as chamadas core ropes dentro das portas NOR.
+	
+	O YUL foi originalmente feito para rodar em um IBM 650 porém foi rapidamente portado para 
+	O Honeywell 800 devido a limitações do de antes.
 	
 	Seria bom implementar um interpreter o qual vai fazer o papel de traduzir as instruções em tempo
 	Nota que as instrucoes do luminary(programa que roda no AGC) é composto por instruções virtuais
@@ -139,12 +169,53 @@ de como o ACG faz a leitura de binarios. O qual é complicado e involve um zero 
 	isso claro para um observador mais atento.
 	O clock da simulação podera ser pausado para analizar esses detalhes;
 	
-	Como no computador real ele tera uma limitacao de 
-
-	https://github.com/chrislgarry/Apollo-11
+	As Instruções do AGC e representação de dados
+	
+	Naquela época não existia o famos floating point IEE 754, standard para representação de números,
+	"reais". o AGC tinha seu próprio método, o que incluia um zero negativo e positivo (que divertido)
+	A maioria das operações eram feitas utilizando o "SP" Single Precision data type, variante de 1's complement notation
+		
+		111111111111111 -> -0
+		000000000000000 -> +0 
 	
 
 
+	Código fonte
+		Um código fonte do luminary por exemplo mistura tanto instruções virtuais(interpreter language)
+		quanto instruções de assembly(basic language).
+		
+		-Formatação
+			código fonte codificad em ASCII
+			
+			Linhas nulas são ignoradas
+			
+			# commentario, nota que no YUL (difere do yaYUL) o codigo fonte era em punch cards
+			não se sabe ao certo como comentario eram definidos porém era algo aver com as
+			colunas do punchcard
+			
+			$ atua como o pre processor macro #include do C isso para compatibilidade
+			com a versão digital do código do Luminary encontrado no github, nem existia
+			arquivos nos sistemas em que rodava YUL
+
+			Nomes para constantes definidas pelo programador seriam de 8 caracteres ou 
+			menos na primeira coluna e não podiam incluir # ou começar em $,
+			exemplo valido -> "-1/(D)+A"
+			
+			 
+						
+	https://github.com/chrislgarry/Apollo-11
+	
+#PERGUNTAS
+	Porque o luminary(Programa principal do AGC) não foi escrito estritamente em AGC assembly(basic language)?
+	O principal problema está em como a memória de programa do luminary era guardada. Era utilizado de portas NOR
+	e "core ropes". Ou seja o programa era costurado dentro da memória do AGC. O que demandava tempo e trabalho
+	manual, tanto que esse tipo de memória foi chamada de LOL (Little Old Ladies). Ou seja programar tudo 
+	em instruções simples demanda armazenamento além de até naquela época ser difficil de gerenciar enquanto se 
+	escreve o projeto. Assim o compilador/assembler utilizado chamado de YUL e depois chamadado de GAP, os quais 
+	rodaram originalmente em um IBM 650 e depois migrados para um Honeywell 800. Foi introduzido dentro do AGC
+	Assim tendo instruções virtuais que traduzidas pelo interpreter.
+	
+	
 #PESQUISA:
 	
 	Palestra sobre o Apollo Guidance Computer
@@ -154,7 +225,12 @@ de como o ACG faz a leitura de binarios. O qual é complicado e involve um zero 
 	https://airandspace.si.edu/collection-objects/keyboard-display-dsky-apollo-guidance-computer/nasm_A19760744000	
 
 	https://klabs.org/history/build_agc/build_agc_5.pdf
+
+	https://www.ibiblio.org/apollo/assembly_language_manual.html
 	
+	https://github.com/virtualagc/virtualagc
+		
+		https://www.ibiblio.org/apollo/yaAGC.html#gsc.tab=0    (LER ISSO)
 #COMO ESCREVER RESUMO:
 	https://stricto.unama.br/pt-br/noticias/aprenda-fazer-um-resumo-impecavel
 	
