@@ -214,7 +214,12 @@ de como o ACG faz a leitura de binarios. O qual é complicado e involve um zero 
 	escreve o projeto. Assim o compilador/assembler utilizado chamado de YUL e depois chamadado de GAP, os quais 
 	rodaram originalmente em um IBM 650 e depois migrados para um Honeywell 800. Foi introduzido dentro do AGC
 	Assim tendo instruções virtuais que traduzidas pelo interpreter.
-	
+
+	Qual é a differença entre o YUL e yaYUL?
+	O YUL ele era um compilador/assembler original que rodava na core memories do AGC e tabem no IBM 650 e depois 
+	no Honeywwll 800. Ele foi programado com uma mistura de linguas uma de alto nive e outra de baixo inventadas no MIT
+	YUL foi no futuro substituido pelo GAP, General Assembler Programm. 
+	Enquanto que o yaYUL é um programa escrito em C que emula o YUL original	
 	
 #PESQUISA:
 	
@@ -230,6 +235,8 @@ de como o ACG faz a leitura de binarios. O qual é complicado e involve um zero 
 	
 	https://github.com/virtualagc/virtualagc
 		
+	https://www.ibiblio.org/apollo/yaYUL.html#gsc.tab=0
+
 		https://www.ibiblio.org/apollo/yaAGC.html#gsc.tab=0    (LER ISSO)
 #COMO ESCREVER RESUMO:
 	https://stricto.unama.br/pt-br/noticias/aprenda-fazer-um-resumo-impecavel
@@ -245,3 +252,51 @@ de como o ACG faz a leitura de binarios. O qual é complicado e involve um zero 
 		-Apresentar idéia geral do artigo
 		
 		-Bases teoricas
+
+
+
+
+#PESQUISA E IMPLEMENTACAO DO YAYUL
+	O que é o yaYUL
+	
+	#PESQUISA AGC ASSEMBLY
+	Dados
+		bit order
+		
+			Parity bits e parity errors
+		
+		Single Precision
+	
+		Double Precision
+		
+		Triple Precision
+		
+		Vetores Geometricos 3D
+	
+		Para acessar uma word da memoria isso leva 12 microsegundos
+		ou um ciclo lembrando que a word e 15 bits 
+		onde o decimo sexto bit e o parity bit utilizado
+		para detectar parity errors
+		os quais acontecem quando um numero par de bits igual a 1
+		sao detectados pelo computador
+	
+		Instrucoes
+		3 bit opcode para 8 instrucoes
+		quarter codes sao uma extensao dos opcodes originais
+		onde sao utilizados 5bits.	
+			em uma instrucao normal 12 bits sao utilizadas
+			formando 4096 locais de memoria decimais
+			ou 0-7777 octal isso e combinado com o Bank Register 
+			permitindo enderecamento de 15 bits o Super Bank Bit 
+			permite 16 bits
+		Memoria
+		0-3777 octal e memoria apagavel(nao se usa o termo RAM)
+		10000-117777 octal e a memoria fixa a memoria programada
+		pelas core ropes
+		
+		concluise que o programador tem apenas 2048 locais decimais
+		de memoria modificavel 2KB(pouco até para época)
+	
+			Na memoria apagavel bits 12 e 11 sao 0
+			para falar para o HW que e memoria apagavel	
+			assim tendo 10 bits para memoria apagavel
