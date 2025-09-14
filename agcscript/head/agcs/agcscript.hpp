@@ -1,6 +1,6 @@
 /*
 	Compilador e Interpretador header only
-	Joao Pedro Protz Vicente
+	
 
 */
 
