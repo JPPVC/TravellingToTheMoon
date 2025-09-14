@@ -1,0 +1,24 @@
+#
+#	TEST.AGCS
+#	JPPVC
+#	2025
+#	joavic@utfpr.edu.br
+#
+#	ESSA linguagem apesar de ser scripting e 100% procedural
+
+#todos os comandos comecados com @ sao processados pelo compilador primeior antes de tudo, 
+#@carregar seria o import do java nao e necessarion linkar o programr
+@carregar "modlunar" #biblioteca para acessar os perifericos do modulo lunar 
+@carregar "terminal" #terminal de debugging em text
+
+
+@prog(63) { # falar para o compilador que o corpo faz part de um programa e o ID do programa que eh 63
+
+	
+}
+
+
+main() {
+
+
+}

@@ -11,6 +11,7 @@
 #define __AGCS_SCRIPT__
 
 #include <string>
+#include <array>
 #include <sstream>
 #include <iostream>
 #include <vector>
@@ -76,19 +77,61 @@ class AGCVm {
 
 //NAME
 //	data = string
+/*
 enum TokenTypeID {
 	SP, DP, TP, STRING, USP, UDP, UTP,  //Tokens representing what is the token, its type
 	IF, WHILE, ELSE, ELIF, //Tokens representing flow control and conditional branching
 	BODY, EXPRESSION,
 	ROUTINE, MACRO, NAME
 };
+*/
 
+
+enum TokenTypeID {
+        SP, DP, TP, STRING, USP, UDP, UTP,
+        INT, UINT, LONG, ULONG, NUM, MNUM, GNUM,
+        TEXTO,
+        IF, SE, WHILE, EQU, ELSE, ALEM, ELIF, ALSE,
+        CONST,
+        TYPEDEF, APELIDO
+};
+
+
+const int KeywordQuantity = 26;
+
+const std::array<std::string, KeywordQuantity> KeywordLookupTable = {
+	"sp", "dp", "tp", "string", "usp", "udp", "utp", //data types
+	"int", "uint", "long", "ulong", "num", "mnum", "gnum", //data types
+	"texto", //data types
+	"if", "se", "while", "enqu", "else", "alem", "elif", "alse" //flow contro
+	"const", //special
+	"typedef", "apelido"
+};
+
+/*
+enum KeywordID {
+	SP, DP, TP, STRING, USP, USP, UDP, UTP,
+	INT, UINT, LONG, ULONG, NUM, MNUM, GNUM,
+	TEXTO,
+	IF, SE, WHILE, EQU, ELSE, ALEM, ELIF, ALSE,
+	CONST,
+	TYPEDEF, APELIDO
+};
+*/
 class Word {
         public:
         std::string hold;
-        Word(std::string hold) : hold(hold){
-        
-        }
+	std::string aliase;
+        Word(std::string hold) : hold(hold) {aliase = "NULLALIASE";}
+	Word(std::string hold, std::string aliase) : hold(hold), aliase(aliase) {}
+	
+	bool isWordOrAliase(std::string cmp) {
+		
+		if (cmp == hold || cmp == aliase) return true;
+		std::cout << "  {"<<hold << "}  hold, cmp" << cmp << std::endl;
+		return false;
+	}
+
 };
 
 
@@ -96,7 +139,7 @@ class Word {
 class TokenNode {
 	private:
 
-	TokenTypeID typeID; //this index will determin the type of the Token and what its children are 
+	//int typeID; //this index will determin the type of the Token and what its children are 
 	int state;
 	std::vector<unsigned char>data; //data held by the token
 	
@@ -104,16 +147,19 @@ class TokenNode {
 	//child by using get and setfrom TokenTree all the nodes are stored only in the TokenTree tokenPool vector
 
 	public:
-	
+	int typeID;
 	
 	void setState(int state) {
 		this->state = state;
 	}
 	
-	void pushData(std::vector<unsigned char> adata) {
+	void pushData(std::vector<unsigned char> data) {
+		/*
 		for (auto c = adata.begin(); c != adata.end(); c++) {
 			this->data.push_back(*c);
 		}
+		*/
+		this->data = data;
 	}
 	void flushData() {
 		data.clear();
@@ -127,14 +173,35 @@ class TokenNode {
 		childID.push_back(id);
 	}
 	
-	TokenNode(TokenTypeID typeID, std::vector<unsigned char> data) :typeID(typeID)  {
+	TokenNode(int typeID, std::vector<unsigned char> data) :typeID(typeID)  {
 		for (std::vector<unsigned char>::iterator c = data.begin();
 			c != data.end(); c++) {
 			this->data.push_back(*c);
 		}
 	}
-	TokenNode(TokenTypeID typeID) : typeID(typeID)  {}
+	TokenNode(int typeID) : typeID(typeID)  {}
 	
+};
+
+class SyntaxErr {
+
+	private:
+
+	std::string errWord;
+	std::stringstream log;
+	bool err;
+
+	public:
+	SyntaxErr(std::string msg, int err, std::string errWord) : err(err), errWord(errWord) {
+		log << msg;
+	}
+	
+	bool isErr() {
+		if(err) {
+			std::cout << "AGCSCRIPT SYNTAX ERROR {word :' " << errWord << " '}";
+		}
+		return err;
+	}
 };
 
 //controlling the data of the TokenNode is done 100% through this class
@@ -143,24 +210,51 @@ class TokenTree {
 	private:
 	
 	std::vector<TokenNode> nodePool;
+	std::vector<Word> wordPool;
 	public:
 
 //TODO set syntax word tree
-	TokenTree(Word add) {
-		TokenNode first;
-		std::stringstream acc;
-		
-		for (int c=0; c<add.hold.size(); c++) {
-
-		}
-		nodePool.push_back(first);
+	TokenTree(std::vector<Word> add) {
+		wordPool = add;
 	}
 
 	void addNode(TokenNode add) {
 		nodePool.push_back(add);
 	}
 	
-	
+	SyntaxErr wordIntoToken() {
+		
+		
+		for (int c=0; c<wordPool.size(); c++) {
+			//check if word is keyword or tagged keyword
+			
+			std::cout << wordPool.size() << "  SIZE" << std::endl;
+		//	std::cout << wordPool[c].hold << "   FED" <<std::endl;
+		//	if(wordPool[c].hold == "\n") std::cout << "new line detetced" << std::endl;
+
+			bool detected = false;
+			for (int kc=0; kc<KeywordQuantity; kc++) {
+				if (wordPool[c].isWordOrAliase(KeywordLookupTable[kc])) {
+					if (wordPool[c].hold != "") {
+						std::cout << "DETECTED " << wordPool[c].hold << std::endl << "ALIASE " << wordPool[c].aliase << std::endl << std::endl;
+						detected = true;
+
+						nodePool.push_back(TokenNode {kc});
+						break;
+					}
+					detected = true;
+				}
+			}
+			if (!detected && c<wordPool.size()) {
+				return SyntaxErr{wordPool[c].hold, true, "SYNTAX ERR DETECTED"};
+			}
+		}
+		
+		for (int c=0; c<nodePool.size(); c++) {
+			std::cout << "ADDED ID  " << nodePool[c].typeID << std::endl;
+		}
+		return SyntaxErr{"", false, ""};
+	}
 
 };
 
@@ -176,6 +270,10 @@ class WordList {
 	int index;
 	
 	public:
+	
+	std::vector<Word> getWordList() {
+		return list;
+	}
 	
 	bool getNextWord(Word &set) {
 		if (index < list.size()) {
@@ -255,7 +353,8 @@ class Scanner {
 		for (int c=0; c < stream.size(); c++) {
 			std::cout << "iter" <<std::endl;
 			
-			if (stream[c] != ' ' && stream[c] >= 33 && stream[c] <= 126) {  //check if its valid ASCII character
+//treat tabs as spaces
+			if ((stream[c] != ' ' && stream[c] != 9) && stream[c] >= 33 && stream[c] <= 126) {  //check if its valid ASCII character
 				if (stream[c] == '#') break;
 				if (stream[c] == 34 && !inString) {
 					inString = true;
@@ -298,7 +397,7 @@ class Scanner {
 		std::stringstream wordList;
 		std::string newLine;
 		WordList list;
-		Word word;
+		Word word{""};
 //TURN CHARS INTO WORDS
 		while (std::getline(stream, newLine)) {
 			
@@ -322,10 +421,10 @@ class Scanner {
 		#endif
 
 //TURN WORDS INTO TOKENS
-	
-		while (list.getNextWord(word)) {
-			
-		}
+		TokenTree tree{list.getWordList()};
+		
+		tree.wordIntoToken();
+		
 	}
 };
 
