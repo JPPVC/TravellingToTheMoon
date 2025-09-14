@@ -1,7 +1,5 @@
 Apollo Guidance Computer Script 
-vai ser uma linguagem interpretada, apesar disso sera typed e sem 
-register schedueling o programador vai ter que especificar registers a 
-serem usados
+vai ser uma linguagem interpretada, apesar disso sera typed
 
 Para que?
 Ferramenta de ensino assecivel para criancas e adolescente entenderem
@@ -50,9 +48,9 @@ Palavras Chave
 
 Controle de Fluxo 
 	if ou se
-		if (%he == 1) print("Olá mundo");
+		if (he == 1) terminal::print("Olá mundo");
 		ou 
-		se (%he == 1) print("Olá mundo");
+		se (he == 1) terminal::print("Olá mundo");
 	while ou enqu
 	
 	else ou alem
