@@ -159,7 +159,15 @@ class IndexedString {
 	void resetTop() {
 		top = 0;
 	}
-
+	
+	std::string getWholeString() {
+		std::stringstream stream;
+		resetTop();
+		for (char get : data) {
+			stream << getNextChar();
+		}
+		stream << "\0";
+	}
 	char get(int virtualIndex) {
 		return data[indexes[virtualIndex]];
 	}
@@ -257,7 +265,7 @@ class Scanner {
 
 			if (!getNewLine.str().empty() &&  !onlyNewLine(getNewLine)) {
 				if (trimUnused(getNewLine, indexed)) { //remove spaces from the begining and coments
-					
+					std::cout << indexed.getWholeString() << std::endl;
 				}
 			}
 		}

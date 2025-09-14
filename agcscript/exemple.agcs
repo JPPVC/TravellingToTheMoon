@@ -1,0 +1,9 @@
+#
+#	CODIGO FONTE EXEMPLO AGC Script
+#
+#
+#
+@load "luminary"
+main() {
+	luminary::print("Ola mundo"); luminary::print("Ola mundo denovo");
+}
