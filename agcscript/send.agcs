@@ -1,0 +1,23 @@
+# every line with a pound sign is a comment
+# every word with a @ at the beggining is a compiler command
+#
+#	AGC SCRIPT 0.0.1 
+#	SEND.AGCS
+#
+
+@load "window"
+@load "lunarmod"  
+rot main() {
+
+	window::print("SCRIPT STARTED");
+	window::print("LUNAR MODULE VELOCITY " + lunarmod::getVelocity());
+	window::print("LUNAR MODULE DISTANCE " + lunarmod::getDistance());
+	window::print("LUNAR MODULE DISTANCE METERS" + lunarmod::getDistance().meters())
+}
+
+#	EXAMPLE OUTPUT
+#	
+#	SCRIPT STARTED
+#	LUNAR MODULE VELOCITY X km/h
+#	LUNAR MODULE DISTANCE Y km
+#	LUNAR MODULE DISTANCE METERS Z m
